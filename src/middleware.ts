@@ -3,8 +3,15 @@ import { getToken } from 'next-auth/jwt'
 import { NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
-  // Skip middleware during build time completely
-  if (process.env.NODE_ENV !== 'production' || !process.env.NEXTAUTH_SECRET) {
+  // Completely skip middleware during build time
+  // Check for multiple build indicators
+  const isBuildTime = 
+    process.env.NODE_ENV !== 'production' || 
+    !process.env.NEXTAUTH_SECRET ||
+    process.env.NEXT_PHASE === 'phase-production-build' ||
+    process.env.NEXT_PHASE === 'phase-production-compile';
+
+  if (isBuildTime) {
     return NextResponse.next()
   }
 
@@ -71,7 +78,8 @@ export async function middleware(request: NextRequest) {
 }
 
 // Configure which routes use this middleware
-export const config = {
+// Only enable middleware in production with proper environment variables
+const middlewareConfig = process.env.NODE_ENV === 'production' && process.env.NEXTAUTH_SECRET ? {
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
@@ -83,4 +91,8 @@ export const config = {
      */
     '/((?!api/auth|_next/static|_next/image|favicon.ico|images).*)',
   ],
-} 
+} : {
+  matcher: [] // Disable middleware during build
+};
+
+export const config = middlewareConfig; 
