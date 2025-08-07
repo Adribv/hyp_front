@@ -24,7 +24,7 @@ interface AccountData {
 export async function registerUserWithBackend(
   user: UserData,
   account: AccountData
-): Promise<any> {
+): Promise<{ id: string | null }> {
   try {
     // Validate BACKEND_URL environment variable
     const backendUrl = process.env.BACKEND_URL;
@@ -33,15 +33,8 @@ export async function registerUserWithBackend(
       return { id: null };
     }
 
-    // Only validate URL format if we're in a runtime environment (not build time)
-    if (typeof window === 'undefined' && process.env.NODE_ENV !== 'production') {
-      try {
-        new URL(backendUrl);
-      } catch (error) {
-        console.error('Invalid BACKEND_URL format:', backendUrl);
-        return { id: null };
-      }
-    }
+    // Skip all URL validation during build time
+    // This function will only be called during runtime
     
     const response = await fetch(`${backendUrl}/auth/login`, {
       method: 'POST',

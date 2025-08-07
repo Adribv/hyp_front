@@ -1,8 +1,5 @@
 "use client";
 
-// Force dynamic rendering to prevent build errors
-export const dynamic = 'force-dynamic';
-
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";

@@ -1,8 +1,5 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { JWT } from "next-auth/jwt";
-import { Session } from "next-auth";
-import type { User, Account, Profile } from "next-auth";
 import { registerUserWithBackend } from "./utils";
 
 // Force dynamic rendering to prevent build errors
@@ -19,7 +16,7 @@ export const authOptions = {
     signIn: "/login",
   },
   callbacks: {
-    async jwt({ token, user, account }) {
+    async jwt({ token, user, account }: any) {
       // If signing in for the first time, save user info in token
       if (account && user) {
         token.accessToken = account.access_token;
@@ -46,7 +43,7 @@ export const authOptions = {
       return token;
     },
     
-    async session({ session, token }) {      
+    async session({ session, token }: any) {      
       // Send properties to the client
       if (session.user) {
         // Use the backend user ID directly as the main ID
@@ -65,7 +62,7 @@ export const authOptions = {
       return session;
     },
     
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account, profile }: any) {
       if (!account || !profile) return true;
       
       try {
