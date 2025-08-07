@@ -6,6 +6,9 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect } from "react";
 
+// Force dynamic rendering to prevent build errors
+export const dynamic = 'force-dynamic';
+
 // Create a separate component that uses useSearchParams
 function LoginContent() {
     const router = useRouter();

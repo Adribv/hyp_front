@@ -25,8 +25,23 @@ export async function registerUserWithBackend(
   user: UserData,
   account: AccountData
 ): Promise<any> {
-  try {    
-    const response = await fetch(`${process.env.BACKEND_URL}/auth/login`, {
+  try {
+    // Validate BACKEND_URL environment variable
+    const backendUrl = process.env.BACKEND_URL;
+    if (!backendUrl) {
+      console.error('BACKEND_URL environment variable is not set');
+      return { id: null };
+    }
+
+    // Validate URL format
+    try {
+      new URL(backendUrl);
+    } catch (error) {
+      console.error('Invalid BACKEND_URL format:', backendUrl);
+      return { id: null };
+    }
+    
+    const response = await fetch(`${backendUrl}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
