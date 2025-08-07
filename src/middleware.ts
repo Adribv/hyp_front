@@ -2,8 +2,12 @@ import { NextResponse } from 'next/server'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest } from 'next/server'
 
-
 export async function middleware(request: NextRequest) {
+  // Skip middleware during build time completely
+  if (process.env.NODE_ENV !== 'production' || !process.env.NEXTAUTH_SECRET) {
+    return NextResponse.next()
+  }
+
   const { pathname } = request.nextUrl
   
   // Get session token
