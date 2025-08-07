@@ -18,9 +18,9 @@ export function validateEnvVars() {
     console.warn('Missing environment variables:', missing);
   }
 
-  // Validate BACKEND_URL format
+  // Only validate BACKEND_URL format in runtime environments
   const backendUrl = process.env.BACKEND_URL;
-  if (backendUrl) {
+  if (backendUrl && typeof window === 'undefined' && process.env.NODE_ENV === 'production') {
     try {
       new URL(backendUrl);
     } catch (error) {
@@ -31,7 +31,7 @@ export function validateEnvVars() {
   return missing.length === 0;
 }
 
-// Call validation during module load
-if (typeof window === 'undefined') {
+// Only call validation during runtime, not during build
+if (typeof window === 'undefined' && process.env.NODE_ENV === 'production') {
   validateEnvVars();
 }

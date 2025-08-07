@@ -37,11 +37,20 @@ export async function middleware(request: NextRequest) {
   
   // Protect other routes - redirect to login if not authenticated
   if (!token) {
+    // Validate environment variable before using it
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+    if (!appUrl) {
+      console.error('NEXT_PUBLIC_APP_URL environment variable is not set');
+      // Fallback to request URL if environment variable is not available
+      const loginUrl = new URL('/login', request.url);
+      return NextResponse.redirect(loginUrl);
+    }
+    
     // Create login URL with the correct base URL
-    const loginUrl = new URL('/login', process.env.NEXT_PUBLIC_APP_URL);
+    const loginUrl = new URL('/login', appUrl);
     
     // Create callback URL with both pathname and search params from the original request
-    const callbackUrl = new URL(request.nextUrl.pathname, process.env.NEXT_PUBLIC_APP_URL);
+    const callbackUrl = new URL(request.nextUrl.pathname, appUrl);
     
     // Copy all search params from the original request to the callback URL
     request.nextUrl.searchParams.forEach((value, key) => {

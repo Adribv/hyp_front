@@ -33,12 +33,14 @@ export async function registerUserWithBackend(
       return { id: null };
     }
 
-    // Validate URL format
-    try {
-      new URL(backendUrl);
-    } catch (error) {
-      console.error('Invalid BACKEND_URL format:', backendUrl);
-      return { id: null };
+    // Only validate URL format if we're in a runtime environment (not build time)
+    if (typeof window === 'undefined' && process.env.NODE_ENV !== 'production') {
+      try {
+        new URL(backendUrl);
+      } catch (error) {
+        console.error('Invalid BACKEND_URL format:', backendUrl);
+        return { id: null };
+      }
     }
     
     const response = await fetch(`${backendUrl}/auth/login`, {
