@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// Force dynamic rendering to prevent build errors
+export const dynamic = 'force-dynamic';
+
 /**
  * API route to proxy requests to Judge0 API for checking submission status
  * This avoids CORS issues when calling Judge0 directly from the browser

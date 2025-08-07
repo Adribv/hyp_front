@@ -1,3 +1,6 @@
+// Force dynamic rendering to prevent build errors
+export const dynamic = 'force-dynamic';
+
 "use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
@@ -7,9 +10,6 @@ import { useSession } from "next-auth/react";
 import { useCourses, useSchools, Course as ApiCourse } from "@/lib/api";
 import CourseCard from "@/components/CourseCard";
 import CreateCourseDialog from "@/components/CreateCourseDialog";
-
-// Force dynamic rendering to prevent build errors
-export const dynamic = 'force-dynamic';
 
 export default function Home() {
   const router = useRouter();

@@ -12,6 +12,8 @@ const nextConfig: NextConfig = {
     // your project has TypeScript errors.
     ignoreBuildErrors: true,
   },
+  // Disable static generation to prevent build errors
+  trailingSlash: false,
   experimental: {
     turbo: {
       resolveAlias: {

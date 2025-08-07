@@ -5,6 +5,9 @@ import { Session } from "next-auth";
 import type { User, Account, Profile } from "next-auth";
 import { registerUserWithBackend } from "./utils";
 
+// Force dynamic rendering to prevent build errors
+export const dynamic = 'force-dynamic';
+
 export const authOptions = {
   providers: [
     GoogleProvider({
