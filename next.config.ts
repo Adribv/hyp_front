@@ -12,11 +12,6 @@ const nextConfig: NextConfig = {
     // your project has TypeScript errors.
     ignoreBuildErrors: true,
   },
-  output: 'export',
-  trailingSlash: true,
-  images: {
-    unoptimized: true
-  },
   experimental: {
     turbo: {
       resolveAlias: {
