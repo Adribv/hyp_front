@@ -1,5 +1,8 @@
 "use client";
 
+// Force dynamic rendering to prevent build errors
+export const dynamic = 'force-dynamic';
+
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { Header } from "@/components/layout/header";
 import { useRouter } from "next/navigation";
